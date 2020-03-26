@@ -12,32 +12,16 @@ public class Caching {
 
 	private BasicCache<Object> basicCache = new BasicCache<Object>();
 
-	//@Around("execution(@com.daloji.cache.aspectj.Cache * *(..))")
-    //@Around("execution(* *(..)) && @annotation(com.daloji.cache.aspectj.Cache)")
-	 // @Around("execution(@com.bytel.ravel.services.aspectJ.LogStartProcess * *(..))")
-	@Around("@annotation(com.daloji.cache.aspectj.Cache)")
+	@Around("@annotation(com.daloji.cachegrid.aspectj.Cache)")
 	public void cacheable(ProceedingJoinPoint thisJoinPoint_p) throws Throwable
 	{
 		
-		System.out.println("ICICICIICIICICICICICIICIC");
-		
 	}
     
-    
-    //@Around("execution(@com.daloji.cache.aspectj.Cache * *(..))")
+    @Around("execution(@com.daloji.cache.aspectj.Cache * *(..))")
     public void logContinueProcess(ProceedingJoinPoint thisJoinPoint_p) throws Throwable
     {
-    	System.out.println("ICICICIICIICICICICICIICIC");
-    }
-    /*
-    @Pointcut("execution(* *(..)) && @annotation(com.daloji.cache.aspectj.Cache)")
-    public void callAt() {}
 
-    @Around(("callAt()"))
-    public void doSomething(ProceedingJoinPoint point)  {
-      //point.proceed();
-      System.out.println("Aspect is runnning...");
-    
-    
-    }*/
+    }
+ 
 }

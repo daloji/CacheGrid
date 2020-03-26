@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns:tns="http://com.daloji.caching/" xmlns:ns1="com.daloji.caching" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://com.daloji.caching/">
+
+  
+    
+<xs:element name="ServerCaches">
+        <xs:annotation>
+            <xs:documentation>configuration des serveurs cache </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:cacheSettings" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="cacheSettings">
+        <xs:annotation>
+            <xs:documentation>configuration du cache.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="type" type="xs:string" use="required"/>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="ipAdresse" type="xs:string" use="required"/>
+            <xs:attribute name="port" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
