@@ -3,7 +3,7 @@
 
   
     
-<xs:element name="ServerCaches">
+<xs:element name="ServerCacheSettings">
         <xs:annotation>
             <xs:documentation>configuration des serveurs cache </xs:documentation>
         </xs:annotation>
