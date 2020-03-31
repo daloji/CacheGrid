@@ -1,27 +1,121 @@
 package com.daloji.cachegrid.aspectj;
 
+
+import static java.util.Objects.nonNull;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 
-import com.daloji.cachegrid.BasicCache;
+import com.daloji.cachegrid.CacheManager;
 
 @Aspect
 public class Caching {
 
-	private BasicCache<Object> basicCache = new BasicCache<Object>();
+	CacheManager cacheManager = CacheManager.getInstance() ;
 
-	@Around("@annotation(com.daloji.cachegrid.aspectj.Cache)")
-	public void cacheable(ProceedingJoinPoint thisJoinPoint_p) throws Throwable
+	@Around("execution(* *(..)) && @annotation(com.daloji.cachegrid.aspectj.Cache)")
+	public Object cacheable(ProceedingJoinPoint joinPoint) throws Throwable
 	{
+		System.out.println("icici");
+		Signature signature = joinPoint.getStaticPart().getSignature();
+		if (signature instanceof MethodSignature) {
+			final MethodSignature ms = (MethodSignature) signature;
+			String[] params = ms.getParameterNames();
+			for (String param : params) {
+		//		System.out.println(ms.getReturnType().getName() + " : " + ms.getParameterTypes()[0].getName() + " : "+joinPoint.getArgs()[0]);
+				// here how do i get parameter value using param ?
+			}
+		}
 		
+		if(nonNull(joinPoint.getArgs()) && joinPoint.getArgs().length>0) {
+			String hash = "";
+			for(Object obj:joinPoint.getArgs()) {
+				byte[] data = toByteArray(obj);
+				data = Sha256(data);
+				String string = bytesToHex(data);
+		
+			}
+			
+		}
+		
+		//thisJoinPoint.
+		joinPoint.proceed();	
+		return null;	
 	}
-    
-    @Around("execution(@com.daloji.cache.aspectj.Cache * *(..))")
-    public void logContinueProcess(ProceedingJoinPoint thisJoinPoint_p) throws Throwable
-    {
 
-    }
- 
+
+	public static String bytesToHex(byte[] bytes) {
+		final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+		char[] hexChars = new char[bytes.length * 2];
+		for (int j = 0; j < bytes.length; j++) {
+			int v = bytes[j] & 0xFF;
+			hexChars[j * 2] = HEX_ARRAY[v >>> 4];
+			hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
+		}
+		return new String(hexChars);
+	}
+
+	//@Around("execution(@com.daloji.cachegrid.aspectj.Cache * *(..))")
+	public void logContinueProcess(ProceedingJoinPoint thisJoinPoint) throws Throwable
+	{
+		System.out.println("LALLALAL");
+		thisJoinPoint.proceed();
+
+	}
+
+	//@Before("execution(* *.*(..)) && @annotation(com.daloji.cachegrid.aspectj.Cache)")
+	public int logContinue(ProceedingJoinPoint thisJoinPoint) throws Throwable
+	{
+		System.out.println("LALLALAL  pppppp");
+		thisJoinPoint.proceed();
+		return 1;
+
+	}
+
+
+
+	private  byte[] toByteArray(Object obj) throws IOException {
+		byte[] bytes = null;
+		ByteArrayOutputStream bos = null;
+		ObjectOutputStream oos = null;
+		try {
+			bos = new ByteArrayOutputStream();
+			oos = new ObjectOutputStream(bos);
+			oos.writeObject(obj);
+			oos.flush();
+			bytes = bos.toByteArray();
+		} finally {
+			if (oos != null) {
+				oos.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+		}
+		return bytes;
+	}
+
+
+
+	public  byte[] Sha256(byte[] input) {
+		MessageDigest digest;
+		try {
+			digest = MessageDigest.getInstance("SHA-256");
+			digest.update(input, 0, input.length);
+			return digest.digest();
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+		}
+
+	}
+
 }

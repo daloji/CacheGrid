@@ -66,6 +66,26 @@
 	<build>
 
 		<plugins>
+		
+		
+		<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+				<version>1.7</version>
+				<configuration>
+					<complianceLevel>1.8</complianceLevel>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>test-compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -73,6 +93,7 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					 <XnoInline>true</XnoInline>
 				</configuration>
 			</plugin>
             <plugin>
