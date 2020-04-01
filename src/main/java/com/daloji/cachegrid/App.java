@@ -18,7 +18,7 @@ public class App
 		BasicCache cache = new BasicCache<Object>();
 		App app = new App();
 		List<Engine> liste=new ArrayList<Engine>();
-		liste.add(Engine.APACHEIGNITE);
+		liste.add(Engine.REDIS);
 		
 		app.testMethode(liste);
 	}

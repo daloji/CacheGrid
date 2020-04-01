@@ -31,22 +31,32 @@ public class Caching {
 			final MethodSignature ms = (MethodSignature) signature;
 			String[] params = ms.getParameterNames();
 			for (String param : params) {
-		//		System.out.println(ms.getReturnType().getName() + " : " + ms.getParameterTypes()[0].getName() + " : "+joinPoint.getArgs()[0]);
+				//		System.out.println(ms.getReturnType().getName() + " : " + ms.getParameterTypes()[0].getName() + " : "+joinPoint.getArgs()[0]);
 				// here how do i get parameter value using param ?
 			}
 		}
-		
+
 		if(nonNull(joinPoint.getArgs()) && joinPoint.getArgs().length>0) {
-			String hash = "";
+			byte[] data = null;
 			for(Object obj:joinPoint.getArgs()) {
-				byte[] data = toByteArray(obj);
-				data = Sha256(data);
-				String string = bytesToHex(data);
-		
+		System.out.println(obj);
+				byte[] dataArgs = toByteArray(obj);
+				if(nonNull(data)) {
+					byte[] tmp =  new byte[data.length + dataArgs.length];
+					System.arraycopy(data, 0, tmp, 0, data.length);
+					System.arraycopy(dataArgs, 0, tmp, data.length, dataArgs.length);
+					data=tmp;
+				}else {
+					data =dataArgs;
+				}
 			}
-			
-		}
 		
+			if(nonNull(data)) {
+				System.out.println(bytesToHex(data));
+			}
+
+		}
+
 		//thisJoinPoint.
 		joinPoint.proceed();	
 		return null;	
