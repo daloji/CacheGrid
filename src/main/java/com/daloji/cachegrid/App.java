@@ -15,7 +15,6 @@ public class App
 	public static void main( String[] args )
 	{
 		System.out.println( "Hello World!" );
-		BasicCache cache = new BasicCache<Object>();
 		App app = new App();
 		List<Engine> liste=new ArrayList<Engine>();
 		liste.add(Engine.REDIS);

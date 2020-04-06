@@ -1,18 +1,20 @@
 package com.daloji.cachegrid;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.junit.Test;
 
 import com.daloji.caching.data.CacheSettings;
 import com.daloji.caching.data.Engine;
-import com.daloji.caching.data.ServerCaches;
+import com.daloji.caching.data.ServerCacheSettings;
 
 
 
@@ -22,11 +24,11 @@ import com.daloji.caching.data.ServerCaches;
 public class AppTest  {
 
     
-    @Test
+   // @Test
     public void test001() throws JAXBException {
     	
     	
-    	ServerCaches serv = new ServerCaches();
+    	ServerCacheSettings serv = new ServerCacheSettings();
 
     	CacheSettings cache = new CacheSettings();
     	cache.setEngine(Engine.REDIS);
@@ -39,8 +41,8 @@ public class AppTest  {
     	serv.getCacheSettings().addAll(listcache);
     
     	
-    	File file = new File("C:\\Users\\A632436\\file.xml");
-		JAXBContext jaxbContext = JAXBContext.newInstance(ServerCaches.class);
+    	File file = new File("/tmp/file.xml");
+		JAXBContext jaxbContext = JAXBContext.newInstance(ServerCacheSettings.class);
 		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
 		// output pretty printed
@@ -48,5 +50,10 @@ public class AppTest  {
 
 		jaxbMarshaller.marshal(serv, file);
 		jaxbMarshaller.marshal(serv, System.out);
+    }
+    
+    
+    public void test002() {
+		
     }
 }

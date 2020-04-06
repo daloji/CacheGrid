@@ -1,8 +1,10 @@
-package com.daloji.cachegrid;
+package com.daloji.cachegrid.system;
 
 import static java.util.Objects.nonNull;
 
 import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,18 +22,17 @@ import com.daloji.caching.data.ServerCacheSettings;;
  * @param <K>
  *
  */
-public class CacheManager {
+public class CacheConfiguration {
 
 	
 	private static final String CONFIG = "cacheSettings.xml";
 	
-	private static  CacheManager instance = null;
+	private static  CacheConfiguration instance = null;
 
-	private HashMap<Engine, List<CacheSettings>> mapServerSettings = null;
+	private HashMap<String,CacheSettings> mapServerSettings = null;
 
-	
-	
-	private CacheManager() {
+
+	private CacheConfiguration() {
 		ServerCacheSettings serverCache = loadServerCacheConfig();
 		if(nonNull(serverCache)) {
 			mapServerSettings =	executeConfiguration(serverCache);
@@ -43,20 +44,20 @@ public class CacheManager {
 	 * 
 	 * @return
 	 */
-	public static CacheManager getInstance()
+	public static CacheConfiguration getInstance()
 	{
 		if(instance ==null) {
-			instance = new CacheManager();
+			instance = new CacheConfiguration();
 		}
 		return instance;
 	}
 	
-	
+
 	
 	private ServerCacheSettings loadServerCacheConfig() {
 	
 		ServerCacheSettings serverSetting = null;
-		InputStream is = CacheManager.class.getClassLoader().getResourceAsStream(CONFIG);
+		InputStream is = CacheConfiguration.class.getClassLoader().getResourceAsStream(CONFIG);
 		JAXBContext jaxbContext;
 		try {
 			jaxbContext = JAXBContext.newInstance(ServerCacheSettings.class);
@@ -69,20 +70,13 @@ public class CacheManager {
 		
 	}
 
-	private  HashMap<Engine, List<CacheSettings>>  executeConfiguration(ServerCacheSettings serverSettings) {	
-		 HashMap<Engine, List<CacheSettings>> mapSettings = null;
+	private  HashMap<String, CacheSettings>  executeConfiguration(ServerCacheSettings serverSettings) {	
+		 HashMap<String, CacheSettings> mapSettings = null;
 		if(nonNull(serverSettings) && nonNull(serverSettings.getCacheSettings())) {
-			mapSettings = new HashMap<Engine,List<CacheSettings>>();
+			mapSettings = new HashMap<String,CacheSettings>();
 			for(CacheSettings cacheSettings:serverSettings.getCacheSettings()) {
 				if(checkCacheSettings(cacheSettings)) {
-					List<CacheSettings> listCache = null;
-					if(mapSettings.containsKey(cacheSettings.getEngine())) {
-						listCache = mapSettings.get(cacheSettings.getEngine());
-					}else {
-						listCache = new ArrayList<CacheSettings>();			
-					}
-					listCache.add(cacheSettings);
-					mapSettings.put(cacheSettings.getEngine(), listCache);
+					mapSettings.put(cacheSettings.getName(),cacheSettings);
 				}
 			}
 		}
@@ -112,5 +106,24 @@ public class CacheManager {
 		return iscorrect;
 
 	}
+	
+	
+	public GenericCache getCache(String cacheName) {
+		GenericCache cache = null;
+		if(nonNull(mapServerSettings) && mapServerSettings.containsKey(cacheName)) {
+			CacheSettings setting = mapServerSettings.get(cacheName);	
+			switch (setting.getEngine()) {
+			case REDIS:
+				
+				break;
+
+			default:
+				break;
+			}
+		}
+		return cache;
+	}
+	
+
 
 }
