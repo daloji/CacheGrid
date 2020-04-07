@@ -7,9 +7,9 @@ import static java.util.Objects.nonNull;
 
 public class CacheManager {
 
-	CacheConfiguration cacheConfiguration = null ;
+	private CacheConfiguration cacheConfiguration = null ;
 
-	private static  CacheManager instance = null;
+	private static CacheManager instance = null;
 
 
 	private CacheManager() {
@@ -31,9 +31,12 @@ public class CacheManager {
 
 	public  <T> T get(AspectParam<T> param) {
 		Object obj =null;
-		if(nonNull(param)) {
-		   String key =	Utils.generateKey(param);
-		   
+		if(nonNull(param) && nonNull(param.getNameCache())) {
+			String key = Utils.generateKey(param);
+			GenericCache cacheSystem = cacheConfiguration.getCache(param.getNameCache());
+			if(nonNull(cacheSystem)) {
+				obj = cacheSystem.get(key);
+			}
 		}
 		return (T) obj;
 	}

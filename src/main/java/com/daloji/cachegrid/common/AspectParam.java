@@ -12,6 +12,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
 
+import com.daloji.cachegrid.aspectj.Cache;
+
 public class AspectParam<T> implements Serializable {
 
 	/**
@@ -25,6 +27,8 @@ public class AspectParam<T> implements Serializable {
 	private Class<T> clazzReturn;
 
 	private Object[] paramValue;
+	
+	private String nameCache;
 
 	public Class<T>[] getClazzParam() {
 		return clazzParam;
@@ -51,6 +55,14 @@ public class AspectParam<T> implements Serializable {
 	}
 
 
+	public String getNameCache() {
+		return nameCache;
+	}
+
+	public void setNameCache(String nameCache) {
+		this.nameCache = nameCache;
+	}
+
 	public void setParamJointPoint(ProceedingJoinPoint jointpoint) {
 		Signature signature = jointpoint.getStaticPart().getSignature();
 		if (signature instanceof MethodSignature) {
@@ -58,6 +70,7 @@ public class AspectParam<T> implements Serializable {
 			clazzReturn = ms.getReturnType();
 			clazzParam = ms.getParameterTypes();
 			paramValue = jointpoint.getArgs();
+			nameCache = ms.getMethod().getAnnotation(Cache.class).engineName();
 			if(nonNull(paramValue) && paramValue.length>0) {
 				byte[] data = null;
 				for(Object obj:paramValue) {

@@ -33,8 +33,7 @@ public class AppTest  {
     	CacheSettings cache = new CacheSettings();
     	cache.setEngine(Engine.REDIS);
     	cache.setName("rediscache");
-    	cache.setIpAdresse("127.0.0.1");
-    	cache.setPort("8364");
+    
     	List<CacheSettings> listcache = new ArrayList<CacheSettings>();
     	listcache.add(cache);
     	listcache.add(cache);

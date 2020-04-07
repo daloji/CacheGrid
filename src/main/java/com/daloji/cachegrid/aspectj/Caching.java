@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 
 import com.daloji.cachegrid.common.AspectParam;
 import com.daloji.cachegrid.system.CacheManager;
+import static java.util.Objects.isNull;
 
 @Aspect
 public class Caching {
@@ -17,10 +18,13 @@ public class Caching {
 	public <T> Object cacheable(ProceedingJoinPoint joinPoint) throws Throwable
 	{
 		AspectParam<T> param = new AspectParam<>();
-		System.out.println("icici");
 		param.setParamJointPoint(joinPoint);
-		//thisJoinPoint.	
-		return joinPoint.proceed();
+		Object objt = cacheManager.get(param);
+		if(isNull(objt)) {
+			objt = joinPoint.proceed();
+		}
+		
+		return objt;
 	}
 	
 	

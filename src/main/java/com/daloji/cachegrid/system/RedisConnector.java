@@ -1,25 +1,28 @@
 package com.daloji.cachegrid.system;
 
-public class RedisConnector<T> implements GenericCache<T>{
+import com.daloji.caching.data.CacheSettings;
 
-	@Override
-	public void put(String key, T object) {
-		// TODO Auto-generated method stub
-		
+public class RedisConnector implements GenericCache{
+
+	private RedisTool redis;
+
+	public  RedisConnector(CacheSettings cacheSettings) {
+		redis = new RedisTool(cacheSettings);
 	}
 
 	@Override
-	public T get(String key) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> void put(String key, T object) {
+		redis.put(key, object);
+	}
+
+	@Override
+	public <T> T get(String key) {
+		return redis.getObject(key);
 	}
 
 	@Override
 	public boolean existKey(String key) {
-		// TODO Auto-generated method stub
 		return false;
 	}
-
-
 
 }

@@ -22,7 +22,7 @@ public class App
 		app.testMethode(liste);
 	}
 
-	@Cache
+	@Cache(engineName = "rediscache")
 	public int testMethode(List<Engine> e) {
 		System.out.println("ICIICICICICI :testMethode");
 		return 0;

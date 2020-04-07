@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ServerCacheSettings xmlns="http://com.daloji.caching/">
     <cacheSettings engine="REDIS"
-             name="rediscache" ipAdresse="127.0.0.1" port="8364"/>
+             name="rediscache" ipAdress="127.0.0.1" port="8364"/>
     <cacheSettings engine="REDIS"
-     name="rediscache1" ipAdresse="127.0.0.1" port="8365"/>
+     name="rediscache1" ipAdress="127.0.0.1" port="8365"/>
 
 </ServerCacheSettings>

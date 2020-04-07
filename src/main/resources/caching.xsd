@@ -32,8 +32,9 @@
         <xs:complexType>
             <xs:attribute name="engine" type="tns:engine" use="required"/>
             <xs:attribute name="name" type="xs:string" use="required"/>
-            <xs:attribute name="ipAdresse" type="xs:string" use="required"/>
-            <xs:attribute name="port" type="xs:string" use="required"/>
+            <xs:attribute name="ipAdress" type="xs:string" use="required"/>
+            <xs:attribute name="port" type="xs:int" use="required"/>
+            <xs:attribute name="ttlKey" type="xs:int" use="required"/>
         </xs:complexType>
     </xs:element>
 </xs:schema>

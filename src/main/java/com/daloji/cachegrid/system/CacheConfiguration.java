@@ -29,7 +29,7 @@ public class CacheConfiguration {
 	
 	private static  CacheConfiguration instance = null;
 
-	private HashMap<String,CacheSettings> mapServerSettings = null;
+	private HashMap<String,GenericCache> mapServerSettings = null;
 
 
 	private CacheConfiguration() {
@@ -70,13 +70,22 @@ public class CacheConfiguration {
 		
 	}
 
-	private  HashMap<String, CacheSettings>  executeConfiguration(ServerCacheSettings serverSettings) {	
-		 HashMap<String, CacheSettings> mapSettings = null;
+	private  HashMap<String, GenericCache>  executeConfiguration(ServerCacheSettings serverSettings) {	
+		 HashMap<String, GenericCache> mapSettings = null;
 		if(nonNull(serverSettings) && nonNull(serverSettings.getCacheSettings())) {
-			mapSettings = new HashMap<String,CacheSettings>();
+			mapSettings = new HashMap<String,GenericCache>();
 			for(CacheSettings cacheSettings:serverSettings.getCacheSettings()) {
 				if(checkCacheSettings(cacheSettings)) {
-					mapSettings.put(cacheSettings.getName(),cacheSettings);
+					GenericCache cache = null;
+					switch (cacheSettings.getEngine()) {
+					case REDIS: cache = new RedisConnector(cacheSettings); 
+						break;
+					default:
+						break;
+					}
+					if(nonNull(cache)) {
+						mapSettings.put(cacheSettings.getName(),cache);	
+					}
 				}
 			}
 		}
@@ -111,15 +120,7 @@ public class CacheConfiguration {
 	public GenericCache getCache(String cacheName) {
 		GenericCache cache = null;
 		if(nonNull(mapServerSettings) && mapServerSettings.containsKey(cacheName)) {
-			CacheSettings setting = mapServerSettings.get(cacheName);	
-			switch (setting.getEngine()) {
-			case REDIS:
-				
-				break;
-
-			default:
-				break;
-			}
+			cache = mapServerSettings.get(cacheName);
 		}
 		return cache;
 	}
