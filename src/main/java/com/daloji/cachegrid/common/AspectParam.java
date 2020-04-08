@@ -8,12 +8,19 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import com.daloji.cachegrid.aspectj.Cache;
 
+/**
+ * Object param for all method
+ * @author daloji
+ *
+ * @param <T>
+ */
 public class AspectParam<T> implements Serializable {
 
 	/**
@@ -74,7 +81,6 @@ public class AspectParam<T> implements Serializable {
 			if(nonNull(paramValue) && paramValue.length>0) {
 				byte[] data = null;
 				for(Object obj:paramValue) {
-					System.out.println(obj);
 					byte[] dataArgs = convertToBytes(obj);
 					if(nonNull(data)) {
 						byte[] tmp =  new byte[data.length + dataArgs.length];
@@ -85,17 +91,21 @@ public class AspectParam<T> implements Serializable {
 						data =dataArgs;
 					}
 				}
-
-				if(nonNull(data)) {
-					System.out.println(bytesToHex(data));
-				}
-
 			}
-			
-			
 		}
 	}
 
+	
+	public void setParamJointPoint(JoinPoint jointpoint) {
+		Signature signature = jointpoint.getStaticPart().getSignature();
+		if (signature instanceof MethodSignature) {
+			final MethodSignature ms = (MethodSignature) signature;
+			clazzReturn = ms.getReturnType();
+			clazzParam = ms.getParameterTypes();
+			paramValue = jointpoint.getArgs();
+			nameCache = ms.getMethod().getAnnotation(Cache.class).engineName();
+		}
+	}
 
 	/**
 	 * Conversion d'un objet en byte Array

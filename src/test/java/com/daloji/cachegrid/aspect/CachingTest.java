@@ -21,7 +21,7 @@ import com.daloji.cachegrid.aspectj.Caching;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"javax.crypto.*","javax.security.auth.*"})
 @PrepareForTest({ProceedingJoinPoint.class,MethodSignature.class,StaticPart.class})
-public class cachingTest {
+public class CachingTest {
 
 	@MockStrict
 	private ProceedingJoinPoint joinpoint;
@@ -33,8 +33,8 @@ public class cachingTest {
 	private StaticPart staticPart;
 	
 
-	@MockStrict
-	private Method method;
+//	@MockStrict
+	//private Method method;
 	
 	@MockStrict
 	private Cache cache;

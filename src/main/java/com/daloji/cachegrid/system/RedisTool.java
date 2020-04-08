@@ -19,7 +19,7 @@ public class RedisTool {
 
 	private JedisPool pool;
 
-	private int ttl;
+	private int ttl=100;
 
 
 	public RedisTool(CacheSettings cacheSettings) {
@@ -59,6 +59,27 @@ public class RedisTool {
 	}
 
 
+	public boolean existKey(String key) {
+		Jedis jedis=null;
+		boolean exist = false;
+		if(key != null){
+			try {
+			jedis = pool.getResource();
+			if(jedis != null){
+				exist =jedis.exists(key.getBytes());
+			}
+			}catch (Exception e) {
+				// TODO: handle exception
+			}finally {
+				if(jedis!=null) {
+					jedis.close();
+				}
+			}
+		}
+
+		return exist;
+	}
+
 
 	public <T> T getObject(String key){
 		Jedis jedis=null;
@@ -69,7 +90,6 @@ public class RedisTool {
 				jedis = pool.getResource();
 				if(jedis != null){
 					byte[] byterep =jedis.get(key.getBytes());
-					jedis.close();
 					if(byterep!=null){
 						ByteArrayInputStream bis = new ByteArrayInputStream(byterep);
 						in = new ObjectInputStream(bis);

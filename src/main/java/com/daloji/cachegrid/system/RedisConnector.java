@@ -22,7 +22,7 @@ public class RedisConnector implements GenericCache{
 
 	@Override
 	public boolean existKey(String key) {
-		return false;
+		return redis.existKey(key);
 	}
 
 }

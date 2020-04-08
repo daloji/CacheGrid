@@ -18,7 +18,6 @@ public class Utils {
 		byte[] data = null;
 		try {
 			for(Object obj:paramvalue) {
-				System.out.println(obj);
 				byte[] dataArgs;
 				dataArgs = Utils.toByteArray(obj);
 				if(nonNull(data)) {

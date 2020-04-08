@@ -40,5 +40,18 @@ public class CacheManager {
 		}
 		return (T) obj;
 	}
+	
+	public  <T> void put(AspectParam<T> param,Object obj) {
+		if(nonNull(param) && nonNull(param.getNameCache())) {
+			String key = Utils.generateKey(param);
+			GenericCache cacheSystem = cacheConfiguration.getCache(param.getNameCache());
+			if(nonNull(cacheSystem)) {
+				if(!cacheSystem.existKey(key)) {
+					cacheSystem.put(key, obj);
+				}
+			}
+		}
+		
+	}
 
 }
