@@ -1,4 +1,4 @@
-package com.daloji.cachegrid.system;
+package com.daloji.cachegrid;
 
 import static java.util.Objects.nonNull;
 
@@ -9,9 +9,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import com.daloji.cachegrid.system.CacheConnector;
 import com.daloji.caching.data.CacheSettings;
 import com.daloji.caching.data.Engine;
-import com.daloji.caching.data.ServerCacheSettings;;
+import com.daloji.caching.data.ServerCacheSettings;
+
 
 /**
  * @author daloji
@@ -48,7 +50,6 @@ public class CacheConfiguration {
 		return instance;
 	}
 	
-
 	
 	private ServerCacheSettings loadServerCacheConfig() {
 	
@@ -72,16 +73,8 @@ public class CacheConfiguration {
 			mapSettings = new HashMap<String,GenericCache>();
 			for(CacheSettings cacheSettings:serverSettings.getCacheSettings()) {
 				if(checkCacheSettings(cacheSettings)) {
-					GenericCache cache = null;
-					switch (cacheSettings.getEngine()) {
-					case REDIS: cache = new RedisConnector(cacheSettings); 
-						break;
-					default:
-						break;
-					}
-					if(nonNull(cache)) {
-						mapSettings.put(cacheSettings.getName(),cache);	
-					}
+					GenericCache cache = new CacheConnector(cacheSettings); 
+					mapSettings.put(cacheSettings.getName(),cache);	
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-package com.daloji.cachegrid.system;
+package com.daloji.cachegrid;
 
 /**
  * all methods need for all Cache System

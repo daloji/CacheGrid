@@ -1,4 +1,4 @@
-package com.daloji.cachegrid.system;
+package com.daloji.cachegrid;
 
 import com.daloji.cachegrid.common.AspectParam;
 import com.daloji.cachegrid.common.Utils;
@@ -44,7 +44,7 @@ public class CacheManager {
 	public  <T> void put(AspectParam<T> param,Object obj) {
 		if(nonNull(param) && nonNull(param.getNameCache())) {
 			String key = Utils.generateKey(param);
-			GenericCache cacheSystem = cacheConfiguration.getCache(param.getNameCache());
+			GenericCache cacheSystem =cacheConfiguration.getCache(param.getNameCache());
 			if(nonNull(cacheSystem)) {
 				if(!cacheSystem.existKey(key)) {
 					cacheSystem.put(key, obj);

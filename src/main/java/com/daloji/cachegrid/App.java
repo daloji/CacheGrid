@@ -35,7 +35,7 @@ public class App
 	@Cache(engineName = "rediscache")
 	public int testMethodeTest(List<Engine> e,HashMap<String, String> mm) {
 		long start = Instant.now().toEpochMilli();
-		for(int i=0;i<10000;i++) {
+		for(int i=0;i<1000000;i++) {
 			System.out.println("iciciciiciciciic");
 		}
 		long stop = Instant.now().toEpochMilli();

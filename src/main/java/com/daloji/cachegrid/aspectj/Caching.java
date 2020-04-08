@@ -9,8 +9,8 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
+import com.daloji.cachegrid.CacheManager;
 import com.daloji.cachegrid.common.AspectParam;
-import com.daloji.cachegrid.system.CacheManager;
 
 /**
  * AsepctJ Entry point  contains all pointcut 

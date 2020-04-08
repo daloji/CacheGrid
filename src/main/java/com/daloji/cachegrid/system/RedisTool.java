@@ -15,19 +15,37 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-public class RedisTool {
+public class RedisTool  implements CacheEngine{
 
 	private JedisPool pool;
 
-	private int ttl=100;
+	private int ttl=10000;
 
-
+	
 	public RedisTool(CacheSettings cacheSettings) {
 		pool = new JedisPool(buildPoolConfig(),cacheSettings.getIpAdress(),cacheSettings.getPort());
 
 	}
 
+	private JedisPoolConfig buildPoolConfig() {
+		final JedisPoolConfig poolConfig = new JedisPoolConfig();
+		poolConfig.setMaxTotal(128);
+		poolConfig.setMaxIdle(128);
+		poolConfig.setMinIdle(16);
+		poolConfig.setTestOnBorrow(true);
+		poolConfig.setTestOnReturn(true);
+		poolConfig.setTestWhileIdle(true);
+		poolConfig.setMinEvictableIdleTimeMillis(Duration.ofSeconds(60).toMillis());
+		poolConfig.setTimeBetweenEvictionRunsMillis(Duration.ofSeconds(30).toMillis());
+		poolConfig.setNumTestsPerEvictionRun(3);
+		poolConfig.setBlockWhenExhausted(true);
+		return poolConfig;
+	}
+
+
+	@Override
 	public <T> void put(String key, T object) {
+
 		Jedis jedis=null;
 		ByteArrayOutputStream bos =null;
 		ObjectOutput out = null;
@@ -59,6 +77,7 @@ public class RedisTool {
 	}
 
 
+	@Override
 	public boolean existKey(String key) {
 		Jedis jedis=null;
 		boolean exist = false;
@@ -81,7 +100,8 @@ public class RedisTool {
 	}
 
 
-	public <T> T getObject(String key){
+	@Override
+	public <T> T getObject(String key) {
 		Jedis jedis=null;
 		T returnObject =null;
 		ObjectInput in = null;
@@ -106,21 +126,5 @@ public class RedisTool {
 		}
 
 		return returnObject;
-
-	}
-
-	private JedisPoolConfig buildPoolConfig() {
-		final JedisPoolConfig poolConfig = new JedisPoolConfig();
-		poolConfig.setMaxTotal(128);
-		poolConfig.setMaxIdle(128);
-		poolConfig.setMinIdle(16);
-		poolConfig.setTestOnBorrow(true);
-		poolConfig.setTestOnReturn(true);
-		poolConfig.setTestWhileIdle(true);
-		poolConfig.setMinEvictableIdleTimeMillis(Duration.ofSeconds(60).toMillis());
-		poolConfig.setTimeBetweenEvictionRunsMillis(Duration.ofSeconds(30).toMillis());
-		poolConfig.setNumTestsPerEvictionRun(3);
-		poolConfig.setBlockWhenExhausted(true);
-		return poolConfig;
 	}
 }
