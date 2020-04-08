@@ -1,19 +1,16 @@
 package com.daloji.cachegrid.common;
 
+import static java.util.Objects.nonNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import static java.util.Objects.nonNull;
-
-import java.awt.RenderingHints.Key;
-
 public class Utils {
 
 	public static <T> String  generateKey(AspectParam<T> param){
-		String key = null;
 		Object[] paramvalue = param.getParamValue();
 		byte[] data = null;
 		try {

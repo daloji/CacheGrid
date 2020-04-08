@@ -50,6 +50,11 @@ public class CacheConfiguration {
 		return instance;
 	}
 	
+	/**
+	 * load configuration from resources xml file
+	 * 
+	 * @return ServerCacheSettings
+	 */
 	
 	private ServerCacheSettings loadServerCacheConfig() {
 	
@@ -67,6 +72,7 @@ public class CacheConfiguration {
 		
 	}
 
+	
 	private  HashMap<String, GenericCache>  executeConfiguration(ServerCacheSettings serverSettings) {	
 		 HashMap<String, GenericCache> mapSettings = null;
 		if(nonNull(serverSettings) && nonNull(serverSettings.getCacheSettings())) {

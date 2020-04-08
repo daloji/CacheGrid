@@ -34,11 +34,11 @@ public class App
 	
 	@Cache(engineName = "rediscache")
 	public int testMethodeTest(List<Engine> e,HashMap<String, String> mm) {
-		long start = Instant.now().toEpochMilli();
+		long start = System.currentTimeMillis();
 		for(int i=0;i<1000000;i++) {
 			System.out.println("iciciciiciciciic");
 		}
-		long stop = Instant.now().toEpochMilli();
+		long stop = System.currentTimeMillis();
 
 		System.out.println(stop-start);
 		return 789546;

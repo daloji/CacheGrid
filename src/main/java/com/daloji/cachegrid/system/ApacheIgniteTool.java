@@ -2,17 +2,17 @@ package com.daloji.cachegrid.system;
 
 import com.daloji.caching.data.CacheSettings;
 
-public class MemCachedTool  implements CacheEngine{
+public class ApacheIgniteTool implements CacheEngine{
 
-	
-	public MemCachedTool(CacheSettings cacheSettings) {
+
+	public ApacheIgniteTool(CacheSettings cacheSettings) {
 
 	}
-	
+
 	@Override
 	public <T> void put(String key, T object) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

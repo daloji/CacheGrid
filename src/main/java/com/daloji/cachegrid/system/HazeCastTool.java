@@ -2,12 +2,13 @@ package com.daloji.cachegrid.system;
 
 import com.daloji.caching.data.CacheSettings;
 
-public class MemCachedTool  implements CacheEngine{
+public class HazeCastTool implements CacheEngine{
 
 	
-	public MemCachedTool(CacheSettings cacheSettings) {
-
+	public HazeCastTool(CacheSettings cacheSettings) {
+		
 	}
+	
 	
 	@Override
 	public <T> void put(String key, T object) {
