@@ -13,9 +13,10 @@ public class Utils {
 	public static <T> String  generateKey(AspectParam<T> param){
 		Object[] paramvalue = param.getParamValue();
 		byte[] data = null;
+		byte[] dataArgs = null;
 		try {
+			 data = Utils.toByteArray(param.getMethodeName());
 			for(Object obj:paramvalue) {
-				byte[] dataArgs;
 				dataArgs = Utils.toByteArray(obj);
 				if(nonNull(data)) {
 					byte[] tmp =  new byte[data.length + dataArgs.length];
@@ -26,6 +27,14 @@ public class Utils {
 					data =dataArgs;
 				}
 			}
+			dataArgs = Utils.toByteArray(param.getClazzReturn());
+			if(nonNull(dataArgs)) {
+				byte[] tmp = new byte[data.length + dataArgs.length];
+				System.arraycopy(data, 0, tmp, 0, data.length);
+				System.arraycopy(dataArgs, 0, tmp, data.length, dataArgs.length);
+				data=tmp;
+			}
+
 			if(nonNull(data)) {
 				data = sha256(data);	
 			}

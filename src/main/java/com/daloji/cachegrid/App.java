@@ -21,13 +21,56 @@ public class App
 		List<Engine> liste=new ArrayList<Engine>();
 		liste.add(Engine.REDIS);
 		
-		int val =app.testMethodeTest(liste,new HashMap<String, String>());
-		System.out.println("val : " + val);
+		//int val =app.testMethodeTest(liste,new HashMap<String, String>());
+		//System.out.println("val : " + val);
+		 app.testListRep(10);
+		//List<Engine> list = app.testListRep(10);
+	//	System.out.println("size : " + list.size());
+		//System.out.println("info : "+ list.get(0).toString());
+		
+		// HashMap<String, String> hashmap = app.testHashRep(10);
+		//System.out.println("size : " + hashmap.size());
+		//System.out.println("info : "+ hashmap.get("1"));
+		
+
 	}
+	
+	
+
+	@Cache(engineName = "rediscache")
+	public void testListRep(int aa) {
+		System.out.println("methode testListRep");
+		List<Engine> liste=new ArrayList<Engine>();
+		liste.add(Engine.REDIS);
+		liste.add(Engine.MEMCACHED);
+		liste.add(Engine.HAZELCAST);
+		for(int i=0;i<1000000;i++) {
+			System.out.println("iciciciiciciciic");
+		}
+		//return liste;
+	}
+	
+	@Cache(engineName = "rediscache")
+	public HashMap<String, String> testHashRep(int aa) {
+		System.out.println("methode testListRep");
+		List<Engine> liste=new ArrayList<Engine>();
+		liste.add(Engine.REDIS);
+		liste.add(Engine.MEMCACHED);
+		liste.add(Engine.HAZELCAST);
+		for(int i=0;i<1000000;i++) {
+			System.out.println("iciciciiciciciic");
+		}
+		HashMap<String, String> hashmap = new HashMap<String, String>();
+		hashmap.put("1","value1");
+		hashmap.put("2","value2");
+		hashmap.put("3","value3");
+		hashmap.put("4","value5");
+		return hashmap;
+	}
+	
 
 	@Cache(engineName = "rediscache")
 	public int testMethode(List<Engine> e) {
-		System.out.println("ICIICICICICI :testMethode");
 		return 444;
 	}
 	
@@ -40,7 +83,6 @@ public class App
 		}
 		long stop = System.currentTimeMillis();
 
-		System.out.println(stop-start);
 		return 789546;
 	}
 

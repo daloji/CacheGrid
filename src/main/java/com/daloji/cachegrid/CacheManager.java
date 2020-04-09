@@ -45,7 +45,7 @@ public class CacheManager {
 		if(nonNull(param) && nonNull(param.getNameCache())) {
 			String key = Utils.generateKey(param);
 			GenericCache cacheSystem =cacheConfiguration.getCache(param.getNameCache());
-			if(nonNull(cacheSystem)) {
+			if(nonNull(cacheSystem) && nonNull(obj) ) {
 				if(!cacheSystem.existKey(key)) {
 					cacheSystem.put(key, obj);
 				}

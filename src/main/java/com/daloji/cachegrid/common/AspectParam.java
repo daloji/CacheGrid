@@ -1,7 +1,5 @@
 package com.daloji.cachegrid.common;
 
-import static java.util.Objects.nonNull;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
@@ -34,8 +32,18 @@ public class AspectParam<T> implements Serializable {
 	private Class<T> clazzReturn;
 
 	private Object[] paramValue;
-	
+
 	private String nameCache;
+
+	private String methodeName;
+
+	public String getMethodeName() {
+		return methodeName;
+	}
+
+	public void setMethodeName(String methodeName) {
+		this.methodeName = methodeName;
+	}
 
 	public Class<T>[] getClazzParam() {
 		return clazzParam;
@@ -70,40 +78,27 @@ public class AspectParam<T> implements Serializable {
 		this.nameCache = nameCache;
 	}
 
-	public void setParamJointPoint(ProceedingJoinPoint jointpoint) {
-		Signature signature = jointpoint.getStaticPart().getSignature();
-		if (signature instanceof MethodSignature) {
-			final MethodSignature ms = (MethodSignature) signature;
-			clazzReturn = ms.getReturnType();
-			clazzParam = ms.getParameterTypes();
-			paramValue = jointpoint.getArgs();
-			nameCache = ms.getMethod().getAnnotation(Cache.class).engineName();
-			if(nonNull(paramValue) && paramValue.length>0) {
-				byte[] data = null;
-				for(Object obj:paramValue) {
-					byte[] dataArgs = convertToBytes(obj);
-					if(nonNull(data)) {
-						byte[] tmp =  new byte[data.length + dataArgs.length];
-						System.arraycopy(data, 0, tmp, 0, data.length);
-						System.arraycopy(dataArgs, 0, tmp, data.length, dataArgs.length);
-						data=tmp;
-					}else {
-						data =dataArgs;
-					}
-				}
-			}
-		}
+	public void setParamJointPoint(ProceedingJoinPoint proceedingJointpoint) {
+		Signature signature = proceedingJointpoint.getStaticPart().getSignature();
+		setfillSignature(signature);
+		paramValue = proceedingJointpoint.getArgs();
+
 	}
 
-	
+
 	public void setParamJointPoint(JoinPoint jointpoint) {
 		Signature signature = jointpoint.getStaticPart().getSignature();
+		setfillSignature(signature);
+		paramValue = jointpoint.getArgs();
+	}
+
+	private void setfillSignature(final Signature signature) {
 		if (signature instanceof MethodSignature) {
-			final MethodSignature ms = (MethodSignature) signature;
-			clazzReturn = ms.getReturnType();
-			clazzParam = ms.getParameterTypes();
-			paramValue = jointpoint.getArgs();
-			nameCache = ms.getMethod().getAnnotation(Cache.class).engineName();
+			MethodSignature methode = (MethodSignature) signature;
+			clazzReturn = methode.getReturnType();
+			clazzParam = methode.getParameterTypes();
+			methodeName = methode.getName();
+			nameCache = methode.getMethod().getAnnotation(Cache.class).engineName();
 		}
 	}
 
