@@ -1,14 +1,12 @@
 package com.daloji.cachegrid.system;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.time.Duration;
 
+import com.daloji.cachegrid.common.Utils;
 import com.daloji.caching.data.CacheSettings;
 
 import redis.clients.jedis.Jedis;
@@ -47,15 +45,9 @@ public class RedisTool  implements CacheEngine{
 	public <T> void put(String key, T object) {
 
 		Jedis jedis=null;
-		ByteArrayOutputStream bos =null;
-		ObjectOutput out = null;
 		if(key !=null){
 			try{
-				bos = new ByteArrayOutputStream();
-				out = new ObjectOutputStream(bos);   
-				out.writeObject(object);
-				out.flush();
-				byte[] bytearray = bos.toByteArray();
+				byte[] bytearray =Utils.toByteArray(object);
 				jedis = pool.getResource();
 				if(jedis != null){
 					jedis.set(key.getBytes(), bytearray);
@@ -64,14 +56,6 @@ public class RedisTool  implements CacheEngine{
 				}
 			}catch (IOException e) {
 				//NOP
-			}finally{
-				if(bos!=null){
-					try {
-						bos.close();
-					} catch (IOException e) {
-						//NOP
-					}
-				}
 			}
 		}
 	}
