@@ -1,19 +1,17 @@
 package com.daloji.cachegrid.system;
 
+import static java.util.Objects.nonNull;
+
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 
 import com.daloji.cachegrid.common.Utils;
 import com.daloji.caching.data.CacheSettings;
 
-import net.spy.memcached.BinaryConnectionFactory;
 import net.spy.memcached.MemcachedClient;
-import static java.util.Objects.nonNull;
 
 
 public class MemCachedTool  implements CacheEngine{
