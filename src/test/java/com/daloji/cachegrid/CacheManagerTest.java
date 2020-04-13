@@ -18,7 +18,7 @@ import com.daloji.cachegrid.common.AspectParam;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"javax.crypto.*","javax.security.auth.*"})
-@PrepareForTest({CacheConfiguration.class,CacheManager.class})
+@PrepareForTest({CacheConfiguration.class})
 public class CacheManagerTest {
 
 
@@ -49,7 +49,7 @@ public class CacheManagerTest {
 	 * when AspectParam  cacheEngine is null 
 	 */
 
-	//@Test
+	@Test
 	public  void cacheManager_KO_02() {
 		AspectParam param = new AspectParam();
 		EasyMock.expect(CacheConfiguration.getInstance()).andReturn(cacheConfiguration);
@@ -64,7 +64,7 @@ public class CacheManagerTest {
 	 * when GenericCache is null 
 	 */
 
-	//@Test
+@Test
 	public  void cacheManager_KO_03() {
 		AspectParam param = new AspectParam();
 		param.setNameCache("redis");
@@ -74,7 +74,7 @@ public class CacheManagerTest {
 		param.setParamValue(obj);
 
 		EasyMock.expect(CacheConfiguration.getInstance()).andReturn(cacheConfiguration);
-		EasyMock.expect(cacheConfiguration.getCache("redis")).andReturn(null);
+		EasyMock.expect(cacheConfiguration.getCache(EasyMock.anyString())).andReturn(null);
 		PowerMock.replayAll();
 		CacheManager cache =  CacheManager.getInstance();
 		Object retobj = cache.get(param);

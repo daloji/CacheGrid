@@ -19,28 +19,28 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import com.daloji.cachegrid.aspectj.Cache;
 import com.daloji.cachegrid.aspectj.Caching;
 
-//@RunWith(PowerMockRunner.class)
-//@PowerMockIgnore({"javax.crypto.*","javax.security.auth.*"})
-//@PrepareForTest({ProceedingJoinPoint.class,MethodSignature.class,StaticPart.class})
+@RunWith(PowerMockRunner.class)
+@PowerMockIgnore({"javax.crypto.*","javax.security.auth.*"})
+@PrepareForTest({ProceedingJoinPoint.class,MethodSignature.class,StaticPart.class})
 public class CachingTest {
 
-	//@MockStrict
+	@MockStrict
 	private ProceedingJoinPoint joinpoint;
 
-	//@MockStrict
+	@MockStrict
 	private MethodSignature signature;
 
-	//@MockStrict
+	@MockStrict
 	private StaticPart staticPart;
 	
 
 //	@MockStrict
 	//private Method method;
 	
-	//@MockStrict
+	@MockStrict
 	private Cache cache;
 
-	//@Before
+	@Before
 	public void beforeTest() {
 		PowerMock.resetAll();
 		PowerMock.mockStaticStrict(ProceedingJoinPoint.class);

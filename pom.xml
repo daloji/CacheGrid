@@ -17,6 +17,8 @@
 		<commons-lang>2.6</commons-lang>
 		<jedis>3.2.0</jedis>
 		<memcached>2.11.6</memcached>
+		<podam.version>7.0.5.RELEASE</podam.version>
+		
 	</properties>
 
 	<dependencies>
@@ -68,6 +70,12 @@
 			<artifactId>easymock</artifactId>
 			<version>${easymock.version}</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>uk.co.jemos.podam</groupId>
+			<artifactId>podam</artifactId>
+			<version>${podam.version}</version>
 		</dependency>
 	</dependencies>
 	<profiles>
