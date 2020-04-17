@@ -20,11 +20,12 @@ import com.daloji.cachegrid.common.AspectParam;
 @Aspect
 public class Caching {
 
-	CacheManager cacheManager = CacheManager.getInstance();
+	private CacheManager cacheManager = null;
 
 	@Around("execution(* *(..)) && @annotation(com.daloji.cachegrid.aspectj.Cache)")
 	public <T> Object cacheable(ProceedingJoinPoint joinPoint) throws Throwable
 	{
+		cacheManager = CacheManager.getInstance();
 		AspectParam<T> param = new AspectParam<>();
 		param.setParamJointPoint(joinPoint);
 		Object objt = cacheManager.get(param);
@@ -41,10 +42,10 @@ public class Caching {
 			returning= "result")
 	public <T> void updateCache(JoinPoint joinPoint, Object result) throws Throwable
 	{
+		cacheManager = CacheManager.getInstance();
 		AspectParam<T> param = new AspectParam<>();
 		param.setParamJointPoint(joinPoint);
 		cacheManager.put(param,result);
-		System.out.println("After");
 	}
 
 }

@@ -66,7 +66,6 @@ public class CacheConfiguration {
 			Unmarshaller Unmarshaller = jaxbContext.createUnmarshaller();
 			serverSetting =(ServerCacheSettings) Unmarshaller.unmarshal(is);
 		} catch (JAXBException e) {
-			System.out.println(e.getMessage());
 		}
 		return serverSetting;
 		
@@ -120,6 +119,4 @@ public class CacheConfiguration {
 		return cache;
 	}
 	
-
-
 }

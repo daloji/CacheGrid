@@ -1,12 +1,17 @@
 package com.daloji.cachegrid.aspect;
 
+import static org.junit.Assert.assertEquals;
+
 import java.lang.reflect.Method;
 import java.util.List;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.JoinPoint.StaticPart;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.easymock.EasyMock;
+import org.easymock.Mock;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,16 +21,19 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.daloji.cachegrid.CacheManager;
+import com.daloji.cachegrid.EasyMockTool;
 import com.daloji.cachegrid.aspectj.Cache;
 import com.daloji.cachegrid.aspectj.Caching;
+import com.daloji.cachegrid.system.RedisTool;
 
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"javax.crypto.*","javax.security.auth.*"})
-@PrepareForTest({ProceedingJoinPoint.class,MethodSignature.class,StaticPart.class})
+@PowerMockIgnore({"javax.crypto.*","javax.security.auth.*","javax.management.*"})
+@PrepareForTest({ProceedingJoinPoint.class,JoinPoint.class,CacheManager.class,MethodSignature.class,StaticPart.class})
 public class CachingTest {
 
 	@MockStrict
-	private ProceedingJoinPoint joinpoint;
+	private ProceedingJoinPoint jointpoint;
 
 	@MockStrict
 	private MethodSignature signature;
@@ -33,12 +41,11 @@ public class CachingTest {
 	@MockStrict
 	private StaticPart staticPart;
 	
+	//@MockStrict
+//	private JoinPoint jointpoint;
 
-//	@MockStrict
-	//private Method method;
-	
 	@MockStrict
-	private Cache cache;
+	private CacheManager cachemanager;
 
 	@Before
 	public void beforeTest() {
@@ -46,14 +53,18 @@ public class CachingTest {
 		PowerMock.mockStaticStrict(ProceedingJoinPoint.class);
 		PowerMock.mockStaticStrict(MethodSignature.class);
 		PowerMock.mockStaticStrict(StaticPart.class);
-		//PowerMock.mockStaticStrict(Method.class);
-		PowerMock.mockStaticStrict(Cache.class);
-
-
+		PowerMock.mockStaticStrict(CacheManager.class);
+		PowerMock.mockStaticStrict(JoinPoint.class);
 	}
 
-	//@Test
-	public void cacheable() throws Throwable {
+	/**
+	 * 
+	 * When cacheable is call 
+	 */
+	@Test
+	@Cache(engineName = "rediscache")
+	public void cacheable_GET_OK() throws Throwable {
+		String methodeName ="cacheable_GET_OK";
 		Caching caching = new Caching();
 		String cacheName ="redis";
 		Object[] params = {"polmlop", "string1", "string3"};
@@ -61,29 +72,53 @@ public class CachingTest {
 		clazzParam[0] = int.class;
 		clazzParam[1] = String.class;
 		clazzParam[2] = String.class;
-
-
-		EasyMock.expect(joinpoint.getStaticPart()).andReturn(staticPart);
+		String value ="value";
+		EasyMock.expect(jointpoint.getStaticPart()).andReturn(staticPart);
 		EasyMock.expect(staticPart.getSignature()).andReturn(signature);
 		EasyMock.expect(signature.getReturnType()).andReturn(List.class);
 		EasyMock.expect(signature.getParameterTypes()).andReturn(clazzParam);
-		
-		Method method = EasyMock.createMock(Method.class);
-		EasyMock.expect(signature.getMethod()).andReturn(method);
-		//EasyMock.expect(joinpoint.getArgs()).andReturn(params);
-		//EasyMock.expect(joinpoint.getArgs().).andReturn(params);
-
-		//EasyMock.expect(signature.getMethod()
-				
-				//.getAnnotation(Cache.class)).andReturn(cache);
-		
-		//andReturn(method);
-	//EasyMock.expect(method.getAnnotation(Cache.class)).andReturn(cache);
-		//EasyMock.expect(cache.engineName()).andReturn(cacheName);
-
-		
+		EasyMock.expect(signature.getName()).andReturn("methode");
+		Method mockMethod = this.getClass().getMethod(methodeName);
+		EasyMock.expect(signature.getMethod()).andReturn(mockMethod);
+		EasyMock.expect(jointpoint.getArgs()).andReturn(params);
+		EasyMock.expect(CacheManager.getInstance()).andReturn(cachemanager);
+		EasyMock.expect(cachemanager.get(EasyMock.anyObject())).andReturn(value);
 		PowerMock.replayAll();
-		caching.cacheable(joinpoint);
+		String expectvalue = (String) caching.cacheable(jointpoint);
 		PowerMock.verify();
+		Assert.assertEquals(expectvalue, value);
+		
+	}
+	/**
+	 * 
+	 * When cacheable is call 
+	 */
+	@Test
+	@Cache(engineName = "rediscache")
+	public void cacheable_update_OK() throws Throwable {
+		String methodeName ="cacheable_update_OK";
+		Caching caching = new Caching();
+		String cacheName ="redis";
+		Object[] params = {"polmlop", "string1", "string3"};
+		Class[] clazzParam = new Class[3];
+		clazzParam[0] = int.class;
+		clazzParam[1] = String.class;
+		clazzParam[2] = String.class;
+		String value ="value";
+		EasyMock.expect(jointpoint.getStaticPart()).andReturn(staticPart);
+		EasyMock.expect(staticPart.getSignature()).andReturn(signature);
+		EasyMock.expect(signature.getReturnType()).andReturn(List.class);
+		EasyMock.expect(signature.getParameterTypes()).andReturn(clazzParam);
+		EasyMock.expect(signature.getName()).andReturn("methode");
+		Method mockMethod = this.getClass().getMethod(methodeName);
+		EasyMock.expect(signature.getMethod()).andReturn(mockMethod);
+		EasyMock.expect(jointpoint.getArgs()).andReturn(params);
+		EasyMock.expect(CacheManager.getInstance()).andReturn(cachemanager);
+		cachemanager.put(EasyMock.anyObject(),EasyMock.eq(value));
+		EasyMock.expectLastCall();
+		PowerMock.replayAll();
+		caching.updateCache(jointpoint, value);
+		PowerMock.verify();
+		
 	}
 }

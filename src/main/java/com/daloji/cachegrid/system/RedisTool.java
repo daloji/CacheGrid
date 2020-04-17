@@ -1,5 +1,6 @@
 package com.daloji.cachegrid.system;
 
+import static java.util.Objects.nonNull;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -44,12 +45,12 @@ public class RedisTool  implements CacheEngine{
 	@Override
 	public <T> void put(String key, T object) {
 
-		Jedis jedis=null;
-		if(key !=null){
+		Jedis jedis = null;
+		if(nonNull(key)){
 			try{
 				byte[] bytearray =Utils.toByteArray(object);
 				jedis = pool.getResource();
-				if(jedis != null){
+				if(nonNull(jedis)){
 					jedis.set(key.getBytes(), bytearray);
 					jedis.expire(key.getBytes(), ttl);
 					jedis.close();
@@ -65,16 +66,16 @@ public class RedisTool  implements CacheEngine{
 	public boolean existKey(String key) {
 		Jedis jedis=null;
 		boolean exist = false;
-		if(key != null){
+		if(nonNull(key)){
 			try {
 			jedis = pool.getResource();
-			if(jedis != null){
+			if(nonNull(jedis)){
 				exist =jedis.exists(key.getBytes());
 			}
 			}catch (Exception e) {
 				// TODO: handle exception
 			}finally {
-				if(jedis!=null) {
+				if(nonNull(jedis)){
 					jedis.close();
 				}
 			}
@@ -89,12 +90,12 @@ public class RedisTool  implements CacheEngine{
 		Jedis jedis=null;
 		T returnObject =null;
 		ObjectInput in = null;
-		if(key != null){
+		if(nonNull(key)){
 			try {
 				jedis = pool.getResource();
-				if(jedis != null){
+				if(nonNull(jedis)){
 					byte[] byterep =jedis.get(key.getBytes());
-					if(byterep!=null){
+					if(nonNull(byterep)){
 						ByteArrayInputStream bis = new ByteArrayInputStream(byterep);
 						in = new ObjectInputStream(bis);
 						returnObject = (T) in.readObject(); 
@@ -103,7 +104,7 @@ public class RedisTool  implements CacheEngine{
 			}catch (Exception e) {
 				//NOP
 			}finally {
-				if(jedis!=null) {
+				if(nonNull(jedis)){
 					jedis.close();
 				}
 			}
