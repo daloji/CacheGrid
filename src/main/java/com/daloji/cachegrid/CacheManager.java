@@ -5,7 +5,14 @@ import com.daloji.cachegrid.common.Utils;
 
 import static java.util.Objects.nonNull;
 
-public class CacheManager {
+import java.io.Serializable;
+
+public class CacheManager implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private CacheConfiguration cacheConfiguration = null ;
 
