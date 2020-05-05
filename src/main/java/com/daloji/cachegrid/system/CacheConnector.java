@@ -1,6 +1,8 @@
 package com.daloji.cachegrid.system;
 
 import com.daloji.cachegrid.GenericCache;
+import com.daloji.cachegrid.connector.MemCachedTool;
+import com.daloji.cachegrid.connector.RedisTool;
 import com.daloji.caching.data.CacheSettings;
 import com.daloji.caching.data.Engine;
 

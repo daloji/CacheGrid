@@ -1,4 +1,4 @@
-package com.daloji.cachegrid.system;
+package com.daloji.cachegrid.connector;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -20,6 +20,7 @@ import org.powermock.reflect.Whitebox;
 import com.daloji.cachegrid.CacheConfiguration;
 import com.daloji.cachegrid.EasyMockTool;
 import com.daloji.cachegrid.common.Utils;
+import com.daloji.cachegrid.connector.RedisTool;
 import com.daloji.caching.data.CacheSettings;
 
 import redis.clients.jedis.Jedis;

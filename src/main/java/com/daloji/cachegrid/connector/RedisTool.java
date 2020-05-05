@@ -1,4 +1,4 @@
-package com.daloji.cachegrid.system;
+package com.daloji.cachegrid.connector;
 
 import static java.util.Objects.nonNull;
 import java.io.ByteArrayInputStream;
@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.time.Duration;
 
 import com.daloji.cachegrid.common.Utils;
+import com.daloji.cachegrid.system.CacheEngine;
 import com.daloji.caching.data.CacheSettings;
 
 import redis.clients.jedis.Jedis;

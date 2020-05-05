@@ -1,4 +1,4 @@
-package com.daloji.cachegrid.system;
+package com.daloji.cachegrid.connector;
 
 import static java.util.Objects.nonNull;
 
@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.net.InetSocketAddress;
 
 import com.daloji.cachegrid.common.Utils;
+import com.daloji.cachegrid.system.CacheEngine;
 import com.daloji.caching.data.CacheSettings;
 
 import net.spy.memcached.MemcachedClient;

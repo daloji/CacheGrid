@@ -1,5 +1,6 @@
-package com.daloji.cachegrid.system;
+package com.daloji.cachegrid.connector;
 
+import com.daloji.cachegrid.system.CacheEngine;
 import com.daloji.caching.data.CacheSettings;
 
 public class HazeCastTool implements CacheEngine{
